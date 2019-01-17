@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>SpringBoot-登录</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        .div1 {
+            width: 500px;
+            margin: 200px auto;
+        }
+    </style>
+</head>
+<body class="layui-layout-body backImg" style="background:no-repeat url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547295622903&di=e6f3602a86a1d6dd424c0f92a5303b6c&imgtype=0&src=http%3A%2F%2Fuploads.5068.com%2Fallimg%2F171128%2F73-1G12QS640.jpg)">
+
+    <div class="div1">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+                           autocomplete="off" class="layui-input">
+                </div>
+
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即登录</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+</div>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'jquery','layer'], function () {
+        var element = layui.element, form = layui.form, $ = layui.$, layer = layui.layer;;
+
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            $.post("/user/login", data.field, function (res) {
+                layer.msg(res.msg);
+                if (res.code === 0) {
+                    location.href = "/";
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tom.bbs_day0117.mapper.InvitationDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.tom.bbs_day0117.model.Invitation">
+        <result column="inv_id" property="inv_id"/>
+        <result column="title" property="title"/>
+        <result column="summary" property="summary"/>
+        <result column="user_id" property="user_id"/>
+        <result column="createdate" property="createdate"/>
+    </resultMap>
+    <resultMap id="InvitationVoUsersMap" type="com.tom.bbs_day0117.vo.InvitationVo">
+        <id column="inv_id" property="inv_id"/>
+        <result column="title" property="title"/>
+        <result column="summary" property="summary"/>
+        <result column="user_id" property="user_id"/>
+        <result column="createdate" property="createdate"/>
+        <association property="users" javaType="Users">
+            <id column="usersId" property="user_id"/>
+            <result column="username" property="username"/>
+            <result column="img" property="img"/>
+        </association>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `inv_id`,
+        `title`,
+        `summary`,
+        `user_id`,
+        `createdate`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.inv_id">
+        INSERT INTO invitation (`inv_id`, `title`, `summary`, `user_id`, `createdate`)
+        VALUES (#{pojo.inv_id}, #{pojo.title}, #{pojo.summary}, #{pojo.user_id}, #{pojo.createdate})
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.inv_id">
+        INSERT INTO invitation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.inv_id!=null">`inv_id`,</if>
+            <if test="pojo.title!=null">`title`,</if>
+            <if test="pojo.summary!=null">`summary`,</if>
+            <if test="pojo.user_id!=null">`user_id`,</if>
+            <if test="pojo.createdate!=null">`createdate`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.inv_id!=null">#{pojo.inv_id},</if>
+            <if test="pojo.title!=null">#{pojo.title},</if>
+            <if test="pojo.summary!=null">#{pojo.summary},</if>
+            <if test="pojo.user_id!=null">#{pojo.user_id},</if>
+            <if test="pojo.createdate!=null">#{pojo.createdate},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO invitation (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.inv_id},
+            #{pojo.title},
+            #{pojo.summary},
+            #{pojo.user_id},
+            #{pojo.createdate}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE invitation
+        <set>
+            <if test="pojo.inv_id != null">`inv_id` = #{pojo.inv_id},</if>
+            <if test="pojo.title != null">`title` = #{pojo.title},</if>
+            <if test="pojo.summary != null">`summary` = #{pojo.summary},</if>
+            <if test="pojo.user_id != null">`user_id` = #{pojo.user_id},</if>
+            <if test="pojo.createdate != null">`createdate` = #{pojo.createdate}</if>
+        </set>
+        WHERE inv_id = #{pojo.inv_id}
+    </update>
+
+
+    <select id="findAll" parameterType="map" resultMap="InvitationVoUsersMap">
+        select users.user_id AS users_id,
+        users.username,
+        users.img,
+        invitation.inv_id,
+        invitation.title,
+        invitation.summary,
+        invitation.user_id,
+        date_format(invitation.createdate,'%Y-%m-%d %H:%i:%s') createdate
+        FROM
+        users
+        INNER JOIN invitation ON invitation.user_id = users.user_id
+        <where>
+            <trim>
+                <if test="title!=null and title!=''">
+                    title like concat("%",#{title},"%")
+
+                    or summary like concat("%",#{title},"%")
+
+                    or date_format(invitation.createdate,'%Y-%m-%d %H:%i:%s') LIKE CONCAT("%",#{title},"%")
+
+                    or users.username LIKE concat("%",#{title},"%")
+                </if>
+            </trim>
+        </where>
+        limit #{start},#{limit}
+    </select>
+
+
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) countAll
+        from  users
+        INNER JOIN invitation ON invitation.user_id = users.user_id
+        <where>
+            <trim>
+                <if test="title!=null and title!=''">
+                    title like concat("%",#{title},"%")
+
+                    or summary like concat("%",#{title},"%")
+
+                    or date_format(invitation.createdate,'%Y-%m-%d %H:%i:%s') LIKE CONCAT("%",#{title},"%")
+
+                    or users.username LIKE concat("%",#{title},"%")
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="selectByInvId" resultMap="InvitationVoUsersMap">
+        SELECT
+               users.user_id AS users_id,
+               users.username,
+               users.img,
+               invitation.inv_id,
+               invitation.title,
+               invitation.summary,
+               invitation.user_id,
+               invitation.createdate
+        FROM
+             users
+                 INNER JOIN invitation ON invitation.user_id = users.user_id
+        WHERE
+                invitation.inv_id = #{inv_id}
+    </select>
+
+    <delete id="deleteById" >
+        delete from invitation where inv_id=#{inv_id}
+    </delete>
+</mapper>
+

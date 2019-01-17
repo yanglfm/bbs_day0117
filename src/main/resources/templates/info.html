@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>BBS</title>
+    <link rel="stylesheet" th:href="@{layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">BBS</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">所有帖子饿
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="javascript:;">列表三</a></dd>
+                        <dd><a href="">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">解决方案</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">云市场</a></li>
+                <li class="layui-nav-item"><a href="">发布商品</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px; text-align: center;"><h1>原贴内容详情</h1>
+            <div style="border: 1px solid #e6e6e6;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">原贴标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" readonly th:value="${byInvId.title}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">原贴内容</label>
+                        <div class="layui-input-block">
+                            <textarea name="desc" th:text="${byInvId.summary}" readonly class="layui-textarea"
+                                      style="resize: none"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发贴作者</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required readonly th:value="${byInvId.getUsers().username}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-col-md4 layui-col-lg-offset9" style="padding-top: 20px">
+                            <a th:href="@{/editReply(inv_id=${byInvId.getInv_id()})}">
+                                <button type="button" class="layui-btn">添加回复</button>
+                            </a>
+                            <a th:href="@{/index}">
+                                <button type="button" class="layui-btn layui-btn-primary">返回帖子列表
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <h1>回复信息列表</h1>
+            <table class="layui-table" lay-data="{url:'/reply/findReplyPage/', page:true, id:'test'}"
+                   lay-filter="test">
+                <thead>
+                <tr>
+                    <th lay-data="{field:'content'}">回复内容</th>
+                    <th lay-data="{field:'username',templet: '#usernameTemplet'}">回复昵称</th>
+                    <th lay-data="{field:'createdate', templet: '#dateFormat', sort: true}">回复时间</th>
+                    <th lay-data="{fixed: 'right', align:'center', toolbar: '#barDemo'}">操作</th>
+                </tr>
+                </thead>
+            </table>
+            <!--手动渲染-->
+            <!--
+                        <table class="layui-table">
+                            <colgroup>
+                                &lt;!&ndash; <col width="150">
+                                 <col width="200">
+                                 <col>&ndash;&gt;
+                            </colgroup>
+                            <thead>
+
+                            <tr>
+                                <th style="text-align: center">回复内容</th>
+                                <th style="text-align: center">回复昵称</th>
+                                <th style="text-align: center">回复时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="replyVo,sta:${replyVos}">
+                                <td th:text="${replyVo.content}"></td>
+                                <td><span th:if="${replyVo.getNoread()==1}" th:text="${replyVo.getUsers().username}"></span> <span
+                                        th:if="${replyVo.getNoread()==-1}" th:text="匿名网友"></span></td>
+                                <td th:text="${replyVo.createdate}"></td>
+
+                            </tr>
+                            </tbody>
+                        </table>-->
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{/layui/layui.js}"></script>
+<script type="text/html" id="dateFormat">
+    {{ Format(d.createdate,"yyyy-M-d h:m:s") }}
+</script>
+<script type="text/html" id="usernameTemplet">
+    {{#  if(d.noread ==-1){ }}
+        匿名网友
+    {{#  } else { }}
+    {{ d.users.username }}
+    {{#  } }}
+</script>
+<script>
+    /**
+     * 获取url地址栏参数方法
+     * @param name
+     * @returns {*}
+     * @constructor
+     */
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    function Format(datetime, fmt) {
+        console.log(datetime);
+        if (parseInt(datetime) == datetime) {
+            if (datetime.length == 10) {
+                datetime = parseInt(datetime) * 1000;
+            } else if (datetime.length == 13) {
+                datetime = parseInt(datetime);
+            }
+        }
+        datetime = new Date(datetime);
+        var o = {
+            "M+": datetime.getMonth() + 1,                 //月份
+            "d+": datetime.getDate(),                    //日
+            "h+": datetime.getHours(),                   //小时
+            "m+": datetime.getMinutes(),                 //分
+            "s+": datetime.getSeconds(),                 //秒
+            "q+": Math.floor((datetime.getMonth() + 3) / 3), //季度
+            "S": datetime.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (datetime.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    //JavaScript代码区域
+    layui.use(['element', 'table', 'laytpl', 'form', 'layer', 'jquery'], function () {
+        var element = layui.element, table = layui.table, laytpl = layui.laytpl, form = layui.form, layer = layui.layer,
+            $ = layui.$;
+        console.log(GetQueryString("inv_id"));
+        var inv_id = GetQueryString("inv_id");
+
+
+        //监听工具条
+        table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'detail') { //查看
+                //do somehing
+
+                location.href = "/replyInfo?re_id="+data.re_id;
+
+            } else if (layEvent === 'del') { //删除
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if (layEvent === 'edit') { //编辑
+                //do something
+
+                // //同步更新缓存对应的值
+                // obj.update({
+                //     username: '123'
+                //     ,title: 'xxx'
+                // });
+            }
+        });
+        table.reload('test', {
+            where: {inv_id: inv_id}
+            , page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+
+
+    });
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看回复</a>
+<!--    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+    <!--&lt;!&ndash; 这里同样支持 laytpl 语法，如： &ndash;&gt;-->
+    <!--{{#  if(d.auth > 2){ }}-->
+    <!--<a class="layui-btn layui-btn-xs" lay-event="check">审核</a>-->
+    <!--{{#  } }}-->
+</script>
+
+</body>
+</html>

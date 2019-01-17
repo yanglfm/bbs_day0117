@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tom.bbs_day0117.mapper.ReplyDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.tom.bbs_day0117.model.Reply">
+        <result column="re_id" property="re_id"/>
+        <result column="inv_id" property="inv_id"/>
+        <result column="content" property="content"/>
+        <result column="user_id" property="user_id"/>
+        <result column="createdate" property="createdate"/>
+    </resultMap>
+
+    <resultMap id="ReplyVoMap" type="com.tom.bbs_day0117.vo.ReplyVo">
+        <id column="re_id" property="re_id"/>
+        <result column="inv_id" property="inv_id"/>
+        <result column="content" property="content"/>
+        <result column="user_id" property="user_id"/>
+        <result column="createdate" property="createdate"/>
+        <result column="noread" property="noread"/>
+        <result column="parentid" property="parentid"/>
+        <association property="users" javaType="Users">
+            <id column="usersId" property="user_id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="phone" property="phone"/>
+            <result column="mail" property="mail"/>
+            <result column="address" property="address"/>
+            <result column="is_admin" property="isAdmin"/>
+            <result column="gender" property="gender"/>
+            <result column="img" property="img"/>
+        </association>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `re_id`,
+        `inv_id`,
+        `content`,
+        `user_id`,
+        `createdate`
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pojo.re_id">
+        INSERT INTO reply_detail (`re_id`, `inv_id`, `content`, `user_id`, `createdate`)
+        VALUES (#{pojo.re_id}, #{pojo.inv_id}, #{pojo.content}, #{pojo.user_id}, #{pojo.createdate})
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="pojo.re_id">
+        INSERT INTO reply_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.re_id!=null">`re_id`,</if>
+            <if test="pojo.inv_id!=null">`inv_id`,</if>
+            <if test="pojo.content!=null">`content`,</if>
+            <if test="pojo.user_id!=null">`user_id`,</if>
+            <if test="pojo.createdate!=null">`createdate`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.re_id!=null">#{pojo.re_id},</if>
+            <if test="pojo.inv_id!=null">#{pojo.inv_id},</if>
+            <if test="pojo.content!=null">#{pojo.content},</if>
+            <if test="pojo.user_id!=null">#{pojo.user_id},</if>
+            <if test="pojo.createdate!=null">#{pojo.createdate},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO reply_detail (
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.re_id},
+            #{pojo.inv_id},
+            #{pojo.content},
+            #{pojo.user_id},
+            #{pojo.createdate}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE reply_detail
+        <set>
+            <if test="pojo.re_id != null">`re_id` = #{pojo.re_id},</if>
+            <if test="pojo.inv_id != null">`inv_id` = #{pojo.inv_id},</if>
+            <if test="pojo.content != null">`content` = #{pojo.content},</if>
+            <if test="pojo.user_id != null">`user_id` = #{pojo.user_id},</if>
+            <if test="pojo.createdate != null">`createdate` = #{pojo.createdate}</if>
+        </set>
+        WHERE re_id = #{pojo.re_id}
+    </update>
+
+    <select id="selectByInvId" resultMap="ReplyVoMap">
+        SELECT reply_detail.re_id,
+               reply_detail.inv_id,
+               reply_detail.content,
+               reply_detail.user_id,
+               reply_detail.createdate,
+               reply_detail.noread,
+               reply_detail.parentid,
+               users.user_id AS usersId,
+               users.username,
+               users.`password`,
+               users.phone,
+               users.mail,
+               users.address,
+               users.isAdmin,
+               users.gender,
+               users.img
+        FROM reply_detail
+                 INNER JOIN users ON reply_detail.user_id = users.user_id
+        WHERE reply_detail.inv_id = #{inv_id}
+        order by createdate desc
+    </select>
+
+
+    <insert id="insertReply">
+        insert into reply_detail (
+        content,inv_id
+        <if test="user_id !=null and user_id !=''">
+            ,user_id
+        </if>
+        <if test="noread !=null and noread !=''">
+            ,noread
+        </if>
+        <if test="parentid !=null and parentid !=''">
+            ,parentid
+        </if>
+        ) values (
+        #{content},#{inv_id}
+        <if test="user_id !=null and user_id !=''">
+            ,#{user_id}
+        </if>
+        <if test="noread !=null and noread !=''">
+            ,#{noread}
+        </if>
+        <if test="parentid !=null and parentid !=''">
+            ,#{parentid}
+        </if>
+        )
+    </insert>
+    <!--分页查询测试-->
+    <select id="selectByInvIdPage" parameterType="map" resultMap="ReplyVoMap">
+        SELECT reply_detail.re_id,
+               reply_detail.inv_id,
+               reply_detail.content,
+               reply_detail.user_id,
+               reply_detail.createdate,
+               reply_detail.noread,
+               reply_detail.parentid,
+               users.user_id AS usersId,
+               users.username,
+               users.`password`,
+               users.phone,
+               users.mail,
+               users.address,
+               users.isAdmin,
+               users.gender,
+               users.img
+        FROM reply_detail
+                 INNER JOIN users ON reply_detail.user_id = users.user_id
+        WHERE reply_detail.inv_id = #{inv_id}
+        order by createdate desc
+        limit #{start},#{limit}
+    </select>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) countAll
+        FROM reply_detail
+        WHERE reply_detail.inv_id = #{inv_id}
+    </select>
+
+    <select id="selectByReIdPage" parameterType="map" resultMap="ReplyVoMap">
+        SELECT reply_detail.re_id,
+               reply_detail.inv_id,
+               reply_detail.content,
+               reply_detail.user_id,
+               reply_detail.createdate,
+               reply_detail.noread,
+               reply_detail.parentid,
+               users.user_id AS usersId,
+               users.username,
+               users.`password`,
+               users.phone,
+               users.mail,
+               users.address,
+               users.isAdmin,
+               users.gender,
+               users.img
+        FROM reply_detail
+                 INNER JOIN users ON reply_detail.user_id = users.user_id
+        WHERE reply_detail.parentid = #{re_id}
+        order by createdate desc
+        limit #{start},#{limit}
+    </select>
+
+    <select id="countAllReId" resultType="java.lang.Long">
+        select count(*) countAll
+        FROM reply_detail
+        WHERE reply_detail.parentid = #{re_id}
+    </select>
+
+    <select id="selectByReId" resultMap="ReplyVoMap">
+        SELECT reply_detail.re_id,
+               reply_detail.inv_id,
+               reply_detail.content,
+               reply_detail.user_id,
+               reply_detail.createdate,
+               reply_detail.noread,
+               reply_detail.parentid,
+               users.user_id AS usersId,
+               users.username,
+               users.`password`,
+               users.phone,
+               users.mail,
+               users.address,
+               users.isAdmin,
+               users.gender,
+               users.img
+        FROM reply_detail
+                 INNER JOIN users ON reply_detail.user_id = users.user_id
+        WHERE reply_detail.re_id = #{re_id}
+    </select>
+
+    <select id="findAll" resultMap="ReplyVoMap">
+        SELECT reply_detail.re_id,
+               reply_detail.inv_id,
+               reply_detail.content,
+               reply_detail.user_id,
+               reply_detail.createdate,
+               reply_detail.noread,
+               reply_detail.parentid,
+               users.user_id AS usersId,
+               users.username,
+               users.`password`,
+               users.phone,
+               users.mail,
+               users.address,
+               users.isAdmin,
+               users.gender,
+               users.img
+        FROM reply_detail
+                 INNER JOIN users ON reply_detail.user_id = users.user_id
+    </select>
+</mapper>
+
