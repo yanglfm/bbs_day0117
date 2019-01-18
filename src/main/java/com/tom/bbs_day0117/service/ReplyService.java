@@ -23,4 +23,6 @@ public interface ReplyService {
     ReplyVo selectByReId(Reply reply);
 
     List<ReplyVo> findAll(Reply reply);
+
+    List<ReplyVo> selectReplyVosReplyVos(Reply reply);
 }

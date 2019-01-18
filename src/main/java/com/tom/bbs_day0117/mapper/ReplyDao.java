@@ -33,4 +33,6 @@ public interface ReplyDao {
     ReplyVo selectByReId(Reply reply);
 
     List<ReplyVo> findAll();
+
+    List<ReplyVo> selectReplyVosReplyVos(Reply reply);
 }

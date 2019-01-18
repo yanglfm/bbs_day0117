@@ -31,6 +31,36 @@
         </association>
     </resultMap>
 
+    <resultMap id="replyVosReplyVosMap" type="com.tom.bbs_day0117.vo.ReplyVo">
+        <id column="r1_re_id" property="re_id"/>
+        <result column="r1_inv_id" property="inv_id"/>
+        <result column="r1_content" property="content"/>
+        <result column="r1_user_id" property="user_id"/>
+        <result column="r1_createdate" property="createdate"/>
+        <result column="r1_noread" property="noread"/>
+        <result column="r1_pid" property="parentid"/>
+        <association property="users" javaType="Users">
+            <id column="u1_user_id" property="user_id"/>
+            <result column="u1_username" property="username"/>
+            <result column="u1_img" property="img"/>
+        </association>
+        <collection property="replyVos" ofType="com.tom.bbs_day0117.vo.ReplyVo">
+            <id column="r2_re_id" property="re_id"/>
+            <result column="r2_inv_id" property="inv_id"/>
+            <result column="r2_content" property="content"/>
+            <result column="r2_user_id" property="user_id"/>
+            <result column="r2_createdate" property="createdate"/>
+            <result column="r2_noread" property="noread"/>
+            <result column="r2_pid" property="parentid"/>
+            <association property="users" javaType="Users">
+                <id column="u2_user_id" property="user_id"/>
+                <result column="u2_username" property="username"/>
+                <result column="u2_img" property="img"/>
+            </association>
+        </collection>
+    </resultMap>
+
+
     <!--auto generated Code-->
     <sql id="all_column">
         `re_id`,
@@ -247,5 +277,37 @@
         FROM reply_detail
                  INNER JOIN users ON reply_detail.user_id = users.user_id
     </select>
+
+
+    <select id="selectReplyVosReplyVos" resultMap="replyVosReplyVosMap">
+        SELECT r1.re_id      AS r1_re_id,
+               r1.inv_id     AS r1_inv_id,
+               r1.content    AS r1_content,
+               r1.user_id    AS r1_user_id,
+               r1.createdate AS r1_createdate,
+               r1.noread     AS r1_noread,
+               r1.parentid   AS r1_pid,
+               u1.user_id    AS u1_user_id,
+               u1.username   AS u1_username,
+               u1.img        AS u1_img,
+               r2.re_id      AS r2_re_id,
+               r2.inv_id     AS r2_inv_id,
+               r2.content    AS r2_content,
+               r2.user_id    AS r2_user_id,
+               r2.createdate AS r2_createdate,
+               r2.noread     AS r2_noread,
+               r2.parentid   AS r2_pid,
+               u2.user_id    AS u2_user_id,
+               u2.username   AS u2_username,
+               u2.img        AS u2_img
+        FROM reply_detail AS r1
+                 INNER JOIN users AS u1 ON r1.user_id = u1.user_id
+                 INNER JOIN reply_detail AS r2 ON r2.user_id = u1.user_id
+                 INNER JOIN users AS u2 ON r1.user_id = u2.user_id AND r2.user_id = u2.user_id
+        WHERE r1.inv_id = #{inv_id}
+          AND r2.parentid = r1.re_id
+    </select>
+
+
 </mapper>
 

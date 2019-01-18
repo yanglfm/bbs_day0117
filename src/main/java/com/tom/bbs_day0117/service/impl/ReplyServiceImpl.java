@@ -72,4 +72,9 @@ public class ReplyServiceImpl implements ReplyService {
     public List<ReplyVo> findAll(Reply reply) {
         return replyDao.findAll();
     }
+
+    @Override
+    public List<ReplyVo> selectReplyVosReplyVos(Reply reply) {
+        return replyDao.selectReplyVosReplyVos(reply);
+    }
 }

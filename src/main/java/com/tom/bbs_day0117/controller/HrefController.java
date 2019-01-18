@@ -32,15 +32,28 @@ public class HrefController {
         return "login";
     }
 
+    /*  @RequestMapping("/info")
+      public ModelAndView info(Reply reply) {
+          ModelAndView mv = new ModelAndView("info");//之前的跳转
+  //        ModelAndView mv = new ModelAndView("test6");
+          System.out.println(reply.getInv_id());
+          Invitation invitation = new Invitation();
+          invitation.setInv_id(reply.getInv_id());
+          InvitationVo byInvId = invitationServiceImpl.findByInvId(invitation);
+          mv.addObject("byInvId", byInvId);
+          List<ReplyVo> replyVos = replyServiceImpl.selectByInvId(reply);
+          mv.addObject("replyVos", replyVos);
+          return mv;
+      } */
     @RequestMapping("/info")
     public ModelAndView info(Reply reply) {
-        ModelAndView mv = new ModelAndView("info");
+        ModelAndView mv = new ModelAndView("test6");
         System.out.println(reply.getInv_id());
         Invitation invitation = new Invitation();
         invitation.setInv_id(reply.getInv_id());
         InvitationVo byInvId = invitationServiceImpl.findByInvId(invitation);
         mv.addObject("byInvId", byInvId);
-        List<ReplyVo> replyVos = replyServiceImpl.selectByInvId(reply);
+        List<ReplyVo> replyVos = replyServiceImpl.selectReplyVosReplyVos(reply);
         mv.addObject("replyVos", replyVos);
         return mv;
     }
@@ -68,8 +81,23 @@ public class HrefController {
     }
 
     @RequestMapping("/test")
-    public String test(){
-        return "test1";
+    public String test() {
+        return "test6";
+    }
+
+    @RequestMapping("/testReply")
+    public String testReply() {
+        return "test_reply";
+    }
+
+    @RequestMapping("/test_last")
+    public String test7() {
+        return "test8";
+    }
+
+    @RequestMapping("/testFrame")
+    public String testFrame() {
+        return "testFrame";
     }
 
 
