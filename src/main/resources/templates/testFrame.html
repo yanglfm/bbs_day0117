@@ -27,7 +27,7 @@
                            class="layui-input">
 
                     <input type="text" name="username" id="username"
-                           readonly required class="layui-input">
+                           required class="layui-input">
                 </div>
                 <div class="layui-input-inline">
                     <input type="checkbox" name="choice" id="choice" lay-filter="choice" title="匿名">
@@ -51,6 +51,10 @@
 <script>
 
     var re_id;
+    //获取父布局的传值
+    function child(obj) {
+        console.log(obj);
+    }
     function Format(datetime, fmt) {
         console.log(datetime);
         if (parseInt(datetime) == datetime) {
@@ -99,7 +103,11 @@
 
         //监听提交
         form.on('submit(addReply)', function (data) {
-            $.post("/reply/addReply", data.field, function (res) {
+            var pid=parent.$('.hidden1').html();
+            var pid1=parent.$('.hidden1').value;
+            console.log(pid)
+            console.log(pid1)
+            $.post("/reply/addReply", {parentid: re_id}, function (res) {
                 if (res.code === 0) {
                     layer.msg(res.msg, {icon: 1});
                     // location.href="/editReply?inv_id="+data.inv_id;

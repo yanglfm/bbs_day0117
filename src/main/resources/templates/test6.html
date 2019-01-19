@@ -34,58 +34,47 @@
                 <div class="list-box" th:each="str,sta:${replyVos}">
 
                     <dl>
-                        <dt><img th:src="@{/image/userImg/default.jpg}" alt="" height="30"
+                        <dt>
+                            <img th:src="@{'/image/userImg/'+${str.users.img}}" alt="" height="30"
                                  style="border-radius: 100%"><span th:text="${str.users.username}"></span>&nbsp;<span
                                 th:text="${str.content}"></span>&nbsp;<span th:text="${str.createdate}"></span>&nbsp;&nbsp;&nbsp;
-                            <button id="btn1" class="layui-btn layui-btn-xs btn1" type="button"><input type="hidden" th:value="${str.re_id}" class="hidden1">
+                            <button id="btn1" class="layui-btn layui-btn-xs btn1" type="button">
                                 回复
                             </button>
+                            <form class="layui-form" id="" action="" style="display: none">
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-inline">
+                                        <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                        <input type="hidden" name="parentid" th:value="${str.re_id}">
+                                        <input type="hidden" name="inv_id" th:value="${str.inv_id}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class=" layui-input-block">
+                                        <button class="layui-btn layui-btn-xs publish" type="button"
+                                                lay-filter="formDemoAdd">
+                                            发表
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </dt>
 
 
                         <dd th:each="ss,sa:${str.getReplyVos()}">
-                            <a href="javascript:;"><img th:src="@{/image/userImg/default.jpg}" alt="" height="30"
+                            <a href="javascript:;"><img th:src="@{'/image/userImg/'+${ss.users.img}}" alt="" height="30"
                                                         style="border-radius: 100%"><span
                                     th:text="${ss.users.username}"></span>&nbsp;回复&nbsp;<span
                                     th:text="${str.users.username}"></span>:<span th:text="${ss.content}"></span></a>&nbsp;<span
                                 th:text="${ss.createdate}"></span>&nbsp;&nbsp;&nbsp;
                             <button id="btn2" class="layui-btn layui-btn-xs  btn2" type="button">回复</button>
+                            <input type="hidden"
+                                   th:value="${ss.re_id}"
+                                   th:class="'hidden2'+${ss.re_id}">
                         </dd>
 
                     </dl>
 
-                    <!--   <dl>
-                      <dt>奶粉辅食&nbsp;&nbsp;&nbsp;&nbsp;<a>回复</a></dt>
-                      <dd><a href="javascript:;"><span>用户名</span><span>|</span>进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉奶粉进口奶粉进口奶粉进口奶粉进口奶粉</a>&nbsp;&nbsp;&nbsp;&nbsp;<a>回复</a></dd>
-                      <dd><a href="javascript:;">宝宝辅食进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉进口奶粉</a>&nbsp;&nbsp;&nbsp;&nbsp;<a>回复</a></dd>
-                      <dd><a href="javascript:;">营养品</a>&nbsp;&nbsp;&nbsp;&nbsp;<a>回复</a></dd>
-                     </dl>-->
-                    <!--     <dl>
-                          <dt>儿童用品</dt>
-                          <dd><a href="javascript:;">纸尿裤</a></dd>
-                          <dd><a href="javascript:;">婴儿湿巾</a></dd>
-                          <dd><a href="javascript:;">婴儿车</a></dd>
-                          <dd><a href="javascript:;">婴儿床</a></dd>
-                          <dd><a href="javascript:;">儿童安全座椅</a></dd>
-                         </dl>
-                         <dl>
-                          <dt>儿童早教</dt>
-                          <dd><a href="javascript:;">儿童玩具</a></dd>
-                          <dd><a href="javascript:;">早教书籍</a></dd>
-                          <dd><a href="javascript:;">孕产育儿书</a></dd>
-                         </dl>
-                         <dl>
-                          <dt>儿童服饰</dt>
-                          <dd><a href="javascript:;">童装</a></dd>
-                          <dd><a href="javascript:;">童鞋</a></dd>
-                          <dd><a href="javascript:;">宝宝配饰</a></dd>
-                         </dl>
-                         <dl>
-                          <dt>孕妈专区</dt>
-                          <dd><a href="javascript:;">孕妇装</a></dd>
-                          <dd><a href="javascript:;">孕妇护肤</a></dd>
-                          <dd><a href="javascript:;">孕妇用品</a></dd>
-                         </dl>-->
                 </div>
             </div>
 
@@ -95,30 +84,61 @@
 
 <script>
 
+
     layui.config({
-        base: '../res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
-    }).use(['mm', 'laypage', 'jquery', 'layer'], function () {
+        base: '../static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).use(['mm', 'laypage', 'jquery', 'layer', 'form'], function () {
         var laypage = layui.laypage, $ = layui.$,
-            mm = layui.mm, layer = layui.layer;
+            mm = layui.mm, layer = layui.layer, form = layui.form;
         laypage.render({
             elem: 'demo0'
             , count: 100 //数据总数
         });
-        $(".btn1").on('click', function () {
-            layer.open({
-                type: 2,
-                area: ['550px', '400px'],
-                title: '添加回复'
-                , content: ['/testFrame', 'no'],
+        // $(".btn1").on('click', function () {
+        //     layer.open({
+        //         type: 2,
+        //         area: ['550px', '400px'],
+        //         title: '添加回复'
+        //         , content: ['/testFrame', 'no'],
+        //
+        //         success: function (layero, index) {
+        //             var iframe = window['layui-layer-iframe' + index];//拿到iframe元素
+        //             console.log(index)
+        //             var parentid = $(".hidden1").value;
+        //             iframe.re_id = parentid;//向此iframe层方法 传递参数
+        //             console.log(parentid);
+        //         }
+        //     });
+        // })
+        $('.btn1').each(function (index, element) {
+            $(this).click(function () {
+                if ($(this).next().is(":hidden")) {//判断是否显示 显示：true 隐藏：false
+                    $(this).next().show();
+                } else {
+                    $(this).next().hide();
+                }
+            })
+        });
 
-                 success: function (layero, index) {
-                var iframe = window['layui-layer-iframe' + index];//拿到iframe元素
-                iframe.re_id = $(".hidden1").value;//向此iframe层方法 传递参数
+        $('.publish').each(function (index, element) {
+            $(this).click(function () {
+                var form = $(this).parent().parent().parent();
+                console.log(form.serialize());
+                $.post("/reply/addReply",form.serialize(),function (res) {
+                    if (res.code===0){
+                        layer.msg("发表成功")
 
-            }
+                    } else {
+                        layer.msg("发表失败")
 
-            });
-        })
+                    }
+                })
+                form.hide();
+            })
+        });
+
+
+        var parentid = $(".hidden2").value;
         $(".btn2").on('click', function () {
             layer.open({
                 type: 2,
@@ -126,10 +146,15 @@
                 title: '添加回复'
                 , content: ['/testFrame', 'no']
                 , success: function (layero, index) {
-                    var iframe = window['layui-layer-iframe' + index];//拿到iframe元素
-                    iframe.re_id = data.user_id;//向此iframe层方法 传递参数
 
-                }
+                    var iframe = window['layui-layer-iframe' + index];//拿到iframe元素
+                    iframe.child($(".hidden2").value);
+                    // iframe.child("123456");
+
+                    iframe.re_id = parentid;//向此iframe层方法 传递参数
+
+                },
+
                 /* ,btn: ['确认', '取消']
                  , yes: function (index, layero) {
                      //按钮【按钮一】的回调
@@ -170,18 +195,6 @@
         //     }
         //   })
 
-        $('.sort a').on('click', function () {
-            $(this).addClass('active').siblings().removeClass('active');
-        })
-        $('.list-box dt').on('click', function () {
-            if ($(this).attr('off')) {
-                $(this).removeClass('active').siblings('dd').show()
-                $(this).attr('off', '')
-            } else {
-                $(this).addClass('active').siblings('dd').hide()
-                $(this).attr('off', true)
-            }
-        })
 
     });
 </script>

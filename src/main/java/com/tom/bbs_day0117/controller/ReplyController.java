@@ -24,9 +24,10 @@ public class ReplyController {
     private ReplyService replyServiceImpl;
 
     @RequestMapping("/addReply")
-    public ResultEntity<String> addReply(Reply reply, HttpSession session, @RequestParam(defaultValue = "") String choice) {
+    public ResultEntity<String> addReply(Reply reply, HttpSession session, Integer parentid, String content, @RequestParam(defaultValue = "") String choice) {
         ResultEntity<String> result = new ResultEntity<>();
-        System.out.println("inv_id----------------------------------------------------" + reply.getInv_id());
+        System.out.println("parentid----------------------------------------------------" + parentid);
+        System.out.println("content----------------------------------------------------" + content);
         try {
             Users user = (Users) session.getAttribute("user");
             reply.setUser_id(user.getUser_id());
