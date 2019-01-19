@@ -67,10 +67,24 @@
                                     th:text="${ss.users.username}"></span>&nbsp;回复&nbsp;<span
                                     th:text="${str.users.username}"></span>:<span th:text="${ss.content}"></span></a>&nbsp;<span
                                 th:text="${ss.createdate}"></span>&nbsp;&nbsp;&nbsp;
-                            <button id="btn2" class="layui-btn layui-btn-xs  btn2" type="button">回复</button>
-                            <input type="hidden"
-                                   th:value="${ss.re_id}"
-                                   th:class="'hidden2'+${ss.re_id}">
+                            <button id="btn2" class="layui-btn layui-btn-xs  btn1" type="button">回复</button>
+                            <form class="layui-form" action="" style="display: none">
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-inline">
+                                        <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                        <input type="hidden" name="parentid" th:value="${ss.re_id}">
+                                        <input type="hidden" name="inv_id" th:value="${ss.inv_id}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class=" layui-input-block">
+                                        <button class="layui-btn layui-btn-xs publish" type="button"
+                                                lay-filter="formDemoAdd">
+                                            发表
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </dd>
 
                     </dl>
@@ -113,6 +127,7 @@
         $('.btn1').each(function (index, element) {
             $(this).click(function () {
                 if ($(this).next().is(":hidden")) {//判断是否显示 显示：true 隐藏：false
+                    $('form').hide();
                     $(this).next().show();
                 } else {
                     $(this).next().hide();
@@ -124,8 +139,8 @@
             $(this).click(function () {
                 var form = $(this).parent().parent().parent();
                 console.log(form.serialize());
-                $.post("/reply/addReply",form.serialize(),function (res) {
-                    if (res.code===0){
+                $.post("/reply/addReply", form.serialize(), function (res) {
+                    if (res.code === 0) {
                         layer.msg("发表成功")
 
                     } else {
@@ -138,62 +153,26 @@
         });
 
 
-        var parentid = $(".hidden2").value;
-        $(".btn2").on('click', function () {
-            layer.open({
-                type: 2,
-                area: ['550px', '400px'],
-                title: '添加回复'
-                , content: ['/testFrame', 'no']
-                , success: function (layero, index) {
+        /*   var parentid = $(".hidden2").value;
+           $(".btn2").on('click', function () {
+               layer.open({
+                   type: 2,
+                   area: ['550px', '400px'],
+                   title: '添加回复'
+                   , content: ['/testFrame', 'no']
+                   , success: function (layero, index) {
 
-                    var iframe = window['layui-layer-iframe' + index];//拿到iframe元素
-                    iframe.child($(".hidden2").value);
-                    // iframe.child("123456");
+                       var iframe = window['layui-layer-iframe' + index];//拿到iframe元素
+                       iframe.child($(".hidden2").value);
+                       // iframe.child("123456");
 
-                    iframe.re_id = parentid;//向此iframe层方法 传递参数
+                       iframe.re_id = parentid;//向此iframe层方法 传递参数
 
-                },
+                   }
 
-                /* ,btn: ['确认', '取消']
-                 , yes: function (index, layero) {
-                     //按钮【按钮一】的回调
-                 }
-                 , btn2: function (index, layero) {
-                     //按钮【按钮二】的回调
 
-                 },
-                 btnAlign: 'c'*/
-
-            });
-        })
-        /*   layui.use(['mm', 'laypage', 'jquery', 'layer'], function () {
-               var laypage = layui.laypage, $ = layui.$,
-                   mm = layui.mm, layer = layui.layer;
-
-               $("#btn1").on('click',function (res) {
-                   layer.msg("123")
-               })
-               laypage.render({
-                   elem: 'demo0'
-                   , count: 100 //数据总数
                });
-       */
-
-        // 模版引擎导入
-        //  var html = demo.innerHTML;
-        //  var listCont = document.getElementById('list-cont');
-        //  // console.log(layui.router("#/about.html"))
-        // mm.request({
-        //     url: '../json/commodity.json',
-        //     success : function(res){
-        //       console.log(res)
-        //       listCont.innerHTML = mm.renderHtml(html,res)
-        //     },
-        //     error: function(res){
-        //       console.log(res);
-        //     }
-        //   })
+           })*/
 
 
     });
