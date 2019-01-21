@@ -27,7 +27,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <img th:src="@{/image/userImg/default.jpg}" class="layui-nav-img">
                     贤心
                 </a>
                 <dl class="layui-nav-child">
@@ -44,31 +44,40 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">所有商品</a>
+                    <a class="" th:href="@{/index}">所有动态</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a th:href="@{/saything}">发表动态</a></dd>
                         <dd><a href="javascript:;">列表二</a></dd>
                         <dd><a href="javascript:;">列表三</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">解决方案</a>
+                    <a href="javascript:;">与我相关</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">列表一</a></dd>
                         <dd><a href="javascript:;">列表二</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="">云市场</a></li>
-                <li class="layui-nav-item"><a href="">发布商品</a></li>
+                <li class="layui-nav-item"><a href="">特别关注</a></li>
+                <li class="layui-nav-item"><a href="">今日热门</a></li>
             </ul>
         </div>
     </div>
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px; text-align: center;"><h1>帖子列表</h1>
+
+        <div style="padding-top: 15px">
+            <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a lay-href="">所有动态</a><span lay-separator="">/</span>
+                <!--            <a><cite>页面</cite></a><span lay-separator="">/</span>-->
+                <a><cite>动态列表</cite></a>
+            </div>
+        </div>
+        <div style="padding: 15px; text-align: center;">
             <form class="layui-form" action="">
                 <div class="layui-form-item">
 

@@ -115,10 +115,9 @@
     </select>
 
 
-
     <select id="countAll" resultType="java.lang.Long">
         select count(*) countAll
-        from  users
+        from users
         INNER JOIN invitation ON invitation.user_id = users.user_id
         <where>
             <trim>
@@ -152,8 +151,13 @@
                 invitation.inv_id = #{inv_id}
     </select>
 
-    <delete id="deleteById" >
+    <delete id="deleteById">
         delete from invitation where inv_id=#{inv_id}
     </delete>
+
+
+    <insert id="insertOne">
+        insert into invitation(summary, user_id,noread) values (#{summary},#{user_id}.#{noread})
+    </insert>
 </mapper>
 

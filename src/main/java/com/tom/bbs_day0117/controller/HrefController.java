@@ -85,19 +85,10 @@ public class HrefController {
         return "test6";
     }
 
-    @RequestMapping("/testReply")
-    public String testReply() {
-        return "test_reply";
-    }
 
-    @RequestMapping("/test_last")
-    public String test7() {
-        return "test8";
-    }
-
-    @RequestMapping("/testFrame")
-    public String testFrame() {
-        return "testFrame";
+    @RequestMapping("/saything")
+    public String saything() {
+        return "saything";
     }
 
 

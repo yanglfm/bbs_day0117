@@ -62,4 +62,9 @@ public class InvitationServiceImpl implements InvitationService {
     public void del(Invitation invitation) {
         invitationDao.deleteById(invitation);
     }
+
+    @Override
+    public void addOne(Invitation invitation) {
+        invitationDao.insertOne(invitation);
+    }
 }

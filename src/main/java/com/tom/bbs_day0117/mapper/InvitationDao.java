@@ -28,4 +28,6 @@ public interface InvitationDao {
     InvitationVo selectByInvId(Invitation invitation);
 
     void deleteById(Invitation invitation);
+
+    void insertOne(Invitation invitation);
 }

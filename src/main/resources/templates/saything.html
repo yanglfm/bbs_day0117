@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>BBS</title>
+    <link rel="stylesheet" th:href="@{layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">BBS</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">个人主页</a></li>
+            <li class="layui-nav-item"><a href="">好友</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img th:src="@{/image/userImg/default.jpg}" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" th:href="@{/index}">所有动态</a>
+                    <dl class="layui-nav-child">
+                        <dd><a th:href="@{/saything}">发表动态</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="javascript:;">列表三</a></dd>
+                        <dd><a href="">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">与我相关</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">特别关注</a></li>
+                <li class="layui-nav-item"><a href="">今日热门</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+
+        <div style="padding-top: 15px">
+            <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a lay-href="">所有动态</a><span lay-separator="">/</span>
+                <a><cite>发表动态</cite></a>
+            </div>
+        </div>
+        <div style="padding-top:  15px; text-align: center;">
+            <form class="layui-form" action="" style="padding-left: 20px;width: 500px;">
+
+                <div class="layui-form-item layui-form-text">
+                    <div class="layui-input-inline" style="width: 400px;">
+                        <textarea name="summary" placeholder="随意说点什么呢~~"  class="layui-textarea" style="resize: none"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-inline" style="width: 450px;">
+                        <input type="checkbox" name="choice" id="choice" lay-filter="choice" title="匿名">
+                        <button class="layui-btn layui-btn-sm " lay-submit lay-filter="formDemo">立即发表</button>
+                        <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{/layui/layui.js}"></script>
+<script type="text/html" id="dateFormat">
+    {{ Format(d.createdate,"yyyy-M-d h:m:s") }}
+</script>
+<script>
+
+
+
+    //JavaScript代码区域
+    layui.use(['element', 'table', 'laytpl', 'form', 'layer', 'jquery'], function () {
+        var element = layui.element, table = layui.table, laytpl = layui.laytpl, form = layui.form, layer = layui.layer,
+            $ = layui.$;
+
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+
+            $.post("",data.field,function (res) {
+
+            });
+            return false;
+        });
+
+
+
+
+    });
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看回复</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+    <!--&lt;!&ndash; 这里同样支持 laytpl 语法，如： &ndash;&gt;-->
+    <!--{{#  if(d.auth > 2){ }}-->
+    <!--<a class="layui-btn layui-btn-xs" lay-event="check">审核</a>-->
+    <!--{{#  } }}-->
+</script>
+
+</body>
+</html>

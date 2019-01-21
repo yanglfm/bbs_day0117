@@ -18,4 +18,7 @@ public interface InvitationService {
     InvitationVo findByInvId(Invitation invitation);
 
     void del(Invitation invitation);
+
+
+    void addOne(Invitation invitation);
 }

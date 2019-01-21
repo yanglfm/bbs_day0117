@@ -26,5 +26,7 @@ public class Invitation {
     private Integer user_id;
     @Column(name = "createdate")
     private Timestamp createdate;
+    @Column(name = "noread")
+    private Integer noread;
 
 }
